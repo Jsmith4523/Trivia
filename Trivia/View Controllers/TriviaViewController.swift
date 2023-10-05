@@ -7,6 +7,8 @@
 
 import UIKit
 
+//Work has not been completed all the way as I have been busy!!!
+
 class TriviaViewController: UIViewController {
     
     //MARK: Outlets
@@ -35,6 +37,7 @@ class TriviaViewController: UIViewController {
     
     //MARK: - Properties
     
+    private var questions: [Question]!
     private var question: Question!
     private var questionCount = 0
     private var correctAnswerCount = 0
@@ -42,13 +45,18 @@ class TriviaViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        startGame()
     }
 
     private func determineGuess(_ guessedAnswer: String) {
-        guard question.correctAnswer == guessedAnswer else {
+        guard let question, question.correctAnswer == guessedAnswer else {
             self.userDidAnswerIncorrectly(question.correctAnswer)
             return
         }
+        
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+        self.correctAnswerCount += 1
+        self.continueGame()
     }
     
     private func userDidAnswerIncorrectly(_ correctAnswer: String) {
@@ -63,14 +71,52 @@ class TriviaViewController: UIViewController {
     }
     
     private func continueGame(_ action: UIAlertAction? = nil) {
-        
+        if let questions {
+            guard !(questions.count == questionCount) else {
+                endGame()
+                return
+            }
+            self.question = questions[questionCount]
+            self.questionCount += 1
+            configureGame()
+        }
     }
     
     private func endGame() {
-        let ac = UIAlertController(title: "The End!",
-                                   message: "",
-                                   preferredStyle: .alert)
-        
-        show(ac, sender: nil)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let vc = storyboard.instantiateViewController(withIdentifier: "ResultsViewController") as? ResultsViewController {
+            vc.correctAnswers = correctAnswerCount
+            vc.isModalInPresentation = true
+            vc.questionsCount = questions!.count
+            vc.startGameOver = startGameOver
+            vc.sheetPresentationController?.preferredCornerRadius  = 25
+            
+            present(vc, animated: true)
+        }
+    }
+    
+    private func startGameOver() {
+        self.correctAnswerCount = 0
+        self.questionCount = 0
+        startGame()
+    }
+    
+    private func startGame() {
+        self.questions = Question.triviaQuestions().shuffled()
+        continueGame()
+    }
+    
+    private func configureGame() {
+        if let question {
+            let answers = question.answers.shuffled()
+            
+            self.questionCountLabel.text = "Question \(questionCount) of \(questions!.count)"
+            self.questionTitleLabel.text = question.title
+            self.entertainmentLabel.text = "Entertainment: \(question.entertainmentType.rawValue)"
+            self.answerOneButton.setTitle(answers[0], for: .normal)
+            self.answerTwoButton.setTitle(answers[1], for: .normal)
+            self.answerThreeButton.setTitle(answers[2], for: .normal)
+            self.answerFourButton.setTitle(answers[3], for: .normal)
+        }
     }
 }
