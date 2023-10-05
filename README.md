@@ -1,5 +1,7 @@
 # Trivia
 
+<img src='https://github.com/Jsmith4523/Trivia/blob/main/Trivia.gif' title='Video Walkthrough' width='350' alt='Video Walkthrough' />
+
 Submitted by: **Jaylen Smith**
 
 **Trivia** is an app that allows users to test their trivia on questions regarding video games, music, and more. Once completed, aa user will see their stats such a number of correct answer after playing the game
