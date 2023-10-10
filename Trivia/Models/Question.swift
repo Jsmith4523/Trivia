@@ -7,19 +7,20 @@
 
 import Foundation
 
-struct Question {
-    
-    enum EntertainmentType: String {
-        case movies     = "Movies"
-        case history    = "History"
-        case music      = "Music"
-        case videoGames = "Video Games"
-        case animals    = "Animals"
-    }
-    
-    let title: String
-    let entertainmentType: EntertainmentType
+struct Question: Decodable {
+    let category: String
     let correctAnswer: String
-    let answers: [String]
+    let question: String
+    let difficulty: String
+    let incorrectAnswers: [String]
+    let type: String
     
+    enum CodingKeys: String, CodingKey {
+        case category
+        case correctAnswer = "correct_answer"
+        case difficulty
+        case question
+        case incorrectAnswers = "incorrect_answers"
+        case type
+    }
 }

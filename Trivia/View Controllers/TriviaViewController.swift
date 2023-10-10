@@ -36,20 +36,11 @@ class TriviaViewController: UIViewController {
     }
     
     //MARK: - Properties
-    
+    private var gameSettings: GameSettings!
     private var questions: [Question]!
     private var question: Question!
     private var questionCount = 0
     private var correctAnswerCount = 0
-    
-    init(questions: [Question]) {
-        super.init(nibName: nil, bundle: nil)
-        self.startGame(questions: questions)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,25 +95,31 @@ class TriviaViewController: UIViewController {
         self.correctAnswerCount = 0
         self.questionCount = 0
         
-        startGame(questions: questions.shuffled())
+        startGame(questions: questions.shuffled(), gameSettings: self.gameSettings)
     }
     
-    private func startGame(questions: [Question]) {
+    func startGame(questions: [Question], gameSettings: GameSettings) {
         self.questions = questions
+        self.gameSettings = gameSettings
         continueGame()
     }
     
     private func configureGame() {
         if let question {
-            let answers = question.answers.shuffled()
+            var answers = question.incorrectAnswers
+            answers.append(question.correctAnswer)
+            answers.shuffle()
             
-            self.questionCountLabel.text = "Question \(questionCount) of \(questions.count)"
-            self.questionTitleLabel.text = question.title
-            self.entertainmentLabel.text = "Entertainment: \(question.entertainmentType.rawValue)"
-            self.answerOneButton.setTitle(answers[0], for: .normal)
-            self.answerTwoButton.setTitle(answers[1], for: .normal)
-            self.answerThreeButton.setTitle(answers[2], for: .normal)
-            self.answerFourButton.setTitle(answers[3], for: .normal)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.questionCountLabel.text = "Question \(self.questionCount) of \(self.questions.count)"
+                self.entertainmentLabel.text = self.gameSettings.category?.title ?? question.category
+                self.view.backgroundColor = self.gameSettings.difficulty?.backgroundColor ?? GameSettings.Difficulty(rawValue: question.difficulty)?.backgroundColor ?? .systemIndigo
+                self.questionTitleLabel.text = question.question
+                self.answerOneButton.setTitle(answers[0], for: .normal)
+                self.answerTwoButton.setTitle(answers[1], for: .normal)
+                self.answerThreeButton.setTitle(answers[2], for: .normal)
+                self.answerFourButton.setTitle(answers[3], for: .normal)
+            }
         }
     }
 }
