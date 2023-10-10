@@ -42,10 +42,17 @@ class TriviaViewController: UIViewController {
     private var questionCount = 0
     private var correctAnswerCount = 0
     
+    init(questions: [Question]) {
+        super.init(nibName: nil, bundle: nil)
+        self.startGame(questions: questions)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        startGame()
     }
 
     private func determineGuess(_ guessedAnswer: String) {
@@ -71,15 +78,13 @@ class TriviaViewController: UIViewController {
     }
     
     private func continueGame(_ action: UIAlertAction? = nil) {
-        if let questions {
-            guard !(questions.count == questionCount) else {
-                endGame()
-                return
-            }
-            self.question = questions[questionCount]
-            self.questionCount += 1
-            configureGame()
+        guard !(questions.count == questionCount) else {
+            endGame()
+            return
         }
+        self.question = questions[questionCount]
+        self.questionCount += 1
+        configureGame()
     }
     
     private func endGame() {
@@ -87,7 +92,7 @@ class TriviaViewController: UIViewController {
         if let vc = storyboard.instantiateViewController(withIdentifier: "ResultsViewController") as? ResultsViewController {
             vc.correctAnswers = correctAnswerCount
             vc.isModalInPresentation = true
-            vc.questionsCount = questions!.count
+            vc.questionsCount = questions.count
             vc.startGameOver = startGameOver
             vc.sheetPresentationController?.preferredCornerRadius  = 25
             
@@ -98,11 +103,12 @@ class TriviaViewController: UIViewController {
     private func startGameOver() {
         self.correctAnswerCount = 0
         self.questionCount = 0
-        startGame()
+        
+        startGame(questions: questions.shuffled())
     }
     
-    private func startGame() {
-        self.questions = Question.triviaQuestions().shuffled()
+    private func startGame(questions: [Question]) {
+        self.questions = questions
         continueGame()
     }
     
@@ -110,7 +116,7 @@ class TriviaViewController: UIViewController {
         if let question {
             let answers = question.answers.shuffled()
             
-            self.questionCountLabel.text = "Question \(questionCount) of \(questions!.count)"
+            self.questionCountLabel.text = "Question \(questionCount) of \(questions.count)"
             self.questionTitleLabel.text = question.title
             self.entertainmentLabel.text = "Entertainment: \(question.entertainmentType.rawValue)"
             self.answerOneButton.setTitle(answers[0], for: .normal)
