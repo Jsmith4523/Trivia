@@ -21,13 +21,15 @@ final class TriviaQuestionService {
 
     private var gameSettings: GameSettings!
         
+    ///Get trivia questions with new game settings
     func getTriviaQuestion(gameSettings: GameSettings,
                            completion: @escaping (Result<[Question], TriviaQuestionServiceError>) -> Void) {
-        
         guard let url = gameSettings.url() else {
             completion(.failure(.invalidUrl))
             return
         }
+        
+        self.gameSettings = gameSettings
         
         URLSession.shared.dataTask(with: url) { data, response, err in
             guard let data, err == nil else {
@@ -47,6 +49,13 @@ final class TriviaQuestionService {
                 completion(.failure(.decodingError))
             }
         }.resume()
+    }
+    
+    ///Get new trivia questions based upon current game settings
+    func getNewTriviaQuestions(completion: @escaping (Result<[Question], TriviaQuestionServiceError>) -> Void) {
+        getTriviaQuestion(gameSettings: self.gameSettings!) { result in
+            completion(result)
+        }
     }
     
     func endGame() {

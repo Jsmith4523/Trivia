@@ -12,16 +12,13 @@ class ResultsViewController: UIViewController {
     var questionsCount: Int?
     var correctAnswers: Int?
     
-    var startGameOver: (() -> ())?
+    var startGameOver: (([Question]) -> ())?
     
     //MARK: Actions
-    @IBAction func startGameOver(_ sender: Any) {
-        //After the model is dismissed, we can call the closure to start the game over...
-        self.dismiss(animated: true) {
-            self.startGameOver!()
-        }
+    @IBAction func restartGame(_ sender: Any) {
+        getNewTriviaQuestions()
     }
-    
+
     //MARK: Outlets
     @IBOutlet weak var correctAnswerLabel: UILabel!
     
@@ -29,6 +26,20 @@ class ResultsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureView()
+    }
+    
+    private func getNewTriviaQuestions() {
+        TriviaQuestionService.shared.getNewTriviaQuestions { result in
+            DispatchQueue.main.async { [weak self] in
+                switch result {
+                case .success(let questions):
+                    self?.startGameOver!(questions)
+                    self?.dismiss(animated: true)
+                case .failure(_):
+                    break
+                }
+            }
+        }
     }
     
     private func configureView() {

@@ -11,24 +11,23 @@ import UIKit
 class TriviaCustomizationViewController: UIViewController {
     
     //MARK: - Actions
+    @IBAction func startGame(_ sender: Any) {
+        self.startGame()
+    }
+    
     @IBAction func difficultyPickerDidChange(_ sender: UISegmentedControl) {
+        gameSettings.difficulty = GameSettings.Difficulty.matchWithTitle(sender.titleForSegment(at: sender.selectedSegmentIndex)!)
     }
     
     //MARK: - Outlets
+    @IBOutlet weak var categoryTableView: UITableView!
     @IBOutlet weak var difficultyPicker: UISegmentedControl!
     
     private var gameSettings = GameSettings()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setupNavigationController()
-    }
-    
-    private func setupNavigationController() {
-        let startButton = UIBarButtonItem(title: "Start", style: .done, target: self, action: #selector(startGame))
-        
-        startButton.tintColor = .red
-        self.navigationController?.navigationItem.rightBarButtonItem = startButton
+        self.configureView()
     }
     
     private func didSelectDifficulty(_ difficulty: GameSettings.Difficulty) {
@@ -68,5 +67,34 @@ class TriviaCustomizationViewController: UIViewController {
             ac.addAction(primaryAction)
             present(ac, animated: true)
         }
+    }
+    
+    private func configureView() {
+        self.categoryTableView.delegate = self
+        self.categoryTableView.dataSource = self
+        
+        difficultyPicker.removeAllSegments()
+        for i in 0..<GameSettings.Difficulty.allCases.count {
+            difficultyPicker.insertSegment(withTitle: GameSettings.Difficulty.allCases[i].title, at: i, animated: true)
+        }
+    }
+}
+
+//MARK: UITableViewDelegate and UITableViewDataSource
+extension TriviaCustomizationViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        gameSettings.category = GameSettings.Category.allCases[indexPath.row]
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let tableViewCell = UITableViewCell(style: .default, reuseIdentifier: "Category")
+        tableViewCell.textLabel?.text = GameSettings.Category.allCases[indexPath.row].title
+        return tableViewCell
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return GameSettings.Category.allCases.count
     }
 }

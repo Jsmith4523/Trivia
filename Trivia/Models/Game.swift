@@ -10,7 +10,7 @@ import UIKit
 
 struct GameSettings {
     
-    enum Category: Int {
+    enum Category: Int, CaseIterable {
         case politics = 24
         case art      = 25
         case animals  = 27
@@ -34,7 +34,7 @@ struct GameSettings {
         }
     }
     
-    enum Difficulty: String {
+    enum Difficulty: String, CaseIterable {
         case easy   = "easy"
         case medium = "medium"
         case hard   = "hard"
@@ -52,6 +52,21 @@ struct GameSettings {
             case .hard:
                 return .systemRed
             }
+        }
+        
+        var title: String {
+            switch self {
+            case .easy:
+                return "Easy"
+            case .medium:
+                return "Medium"
+            case .hard:
+                return "Hard"
+            }
+        }
+        
+        static func matchWithTitle(_ title: String) -> Self? {
+            self.allCases.first(where: {$0.title == title})
         }
     }
     

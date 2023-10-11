@@ -44,8 +44,6 @@ class TriviaViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.isHidden = true
-        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
 
     private func determineGuess(_ guessedAnswer: String) {
@@ -93,11 +91,11 @@ class TriviaViewController: UIViewController {
         }
     }
     
-    private func startGameOver() {
+    private func startGameOver(newQuestions: [Question]? = nil) {
         self.correctAnswerCount = 0
         self.questionCount = 0
         
-        startGame(questions: questions.shuffled(), gameSettings: self.gameSettings)
+        startGame(questions: (newQuestions ?? self.questions).shuffled(), gameSettings: self.gameSettings)
     }
     
     func startGame(questions: [Question], gameSettings: GameSettings) {
@@ -106,13 +104,19 @@ class TriviaViewController: UIViewController {
         continueGame()
     }
     
+    func dismissGame() {
+        DispatchQueue.main.asyncAfter(wallDeadline: .now() + 1) {
+            self.dismiss(animated: true)
+        }
+    }
+    
     private func configureGame() {
         if let question {
             var answers = question.incorrectAnswers
             answers.append(question.correctAnswer)
             answers.shuffle()
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
                 self.questionCountLabel.text = "Question \(self.questionCount) of \(self.questions.count)"
                 self.entertainmentLabel.text = self.gameSettings.category?.title ?? question.category
                 self.view.backgroundColor = self.gameSettings.difficulty?.backgroundColor ?? GameSettings.Difficulty(rawValue: question.difficulty)?.backgroundColor ?? .systemIndigo
