@@ -44,6 +44,8 @@ class TriviaViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.isHidden = true
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
 
     private func determineGuess(_ guessedAnswer: String) {
@@ -65,7 +67,7 @@ class TriviaViewController: UIViewController {
         
         let primaryAction = UIAlertAction(title: "OK", style: .default, handler: continueGame(_:))
         ac.addAction(primaryAction)
-        show(ac, sender: nil)
+        present(ac, animated: true)
     }
     
     private func continueGame(_ action: UIAlertAction? = nil) {

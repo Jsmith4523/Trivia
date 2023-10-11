@@ -10,6 +10,13 @@ import UIKit
 
 class TriviaCustomizationViewController: UIViewController {
     
+    //MARK: - Actions
+    @IBAction func difficultyPickerDidChange(_ sender: UISegmentedControl) {
+    }
+    
+    //MARK: - Outlets
+    @IBOutlet weak var difficultyPicker: UISegmentedControl!
+    
     private var gameSettings = GameSettings()
     
     override func viewDidLoad() {
@@ -20,16 +27,8 @@ class TriviaCustomizationViewController: UIViewController {
     private func setupNavigationController() {
         let startButton = UIBarButtonItem(title: "Start", style: .done, target: self, action: #selector(startGame))
         
-        //self.navigationController?.navigationItem.rightBarButtonItem = startButton
-        startGame()
-    }
-    
-    private func presentDifficultyView() {
-        
-    }
-    
-    private func presentCategoryView() {
-        
+        startButton.tintColor = .red
+        self.navigationController?.navigationItem.rightBarButtonItem = startButton
     }
     
     private func didSelectDifficulty(_ difficulty: GameSettings.Difficulty) {

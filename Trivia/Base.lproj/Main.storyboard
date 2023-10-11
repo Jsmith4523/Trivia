@@ -304,44 +304,52 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Customize Your Trivia!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aqP-Eg-SoS">
-                                <rect key="frame" x="55" y="216" width="210" height="65"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="65" id="r38-qN-KTe"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gamecontroller" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="bHx-NW-zse">
-                                <rect key="frame" x="110" y="90" width="100" height="97.5"/>
-                                <color key="tintColor" systemColor="systemIndigoColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="Xhi-Qt-h55"/>
-                                    <constraint firstAttribute="height" constant="100" id="nuK-Zh-gHt"/>
-                                </constraints>
-                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose a difficulty and category" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wVd-lL-GQZ">
-                                <rect key="frame" x="35" y="305" width="250" height="21"/>
+                                <rect key="frame" x="35" y="106" width="250" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="e85-BD-uK9">
+                                <rect key="frame" x="95" y="172.5" width="131" height="32"/>
+                                <segments>
+                                    <segment title="First"/>
+                                    <segment title="Second"/>
+                                </segments>
+                                <connections>
+                                    <action selector="difficultyPickerDidChange:" destination="k1N-kx-bIl" eventType="valueChanged" id="V1A-cZ-amR"/>
+                                </connections>
+                            </segmentedControl>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="SEC-2r-J6l">
+                                <rect key="frame" x="20" y="268.5" width="280" height="32"/>
+                                <segments>
+                                    <segment title="First"/>
+                                    <segment title="Second"/>
+                                </segments>
+                                <connections>
+                                    <action selector="difficultyPickerDidChange:" destination="k1N-kx-bIl" eventType="valueChanged" id="fFM-Uh-3Fe"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="gbb-4A-id6"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="aqP-Eg-SoS" firstAttribute="centerX" secondItem="ZBs-lQ-gRl" secondAttribute="centerX" id="18Z-Vs-9gF"/>
-                            <constraint firstItem="bHx-NW-zse" firstAttribute="top" secondItem="gbb-4A-id6" secondAttribute="top" constant="25" id="4a9-h9-H4o"/>
-                            <constraint firstItem="wVd-lL-GQZ" firstAttribute="top" secondItem="aqP-Eg-SoS" secondAttribute="bottom" constant="24" id="Rdy-44-oy6"/>
-                            <constraint firstItem="bHx-NW-zse" firstAttribute="centerX" secondItem="ZBs-lQ-gRl" secondAttribute="centerX" id="Udi-HW-VmT"/>
-                            <constraint firstItem="aqP-Eg-SoS" firstAttribute="top" secondItem="bHx-NW-zse" secondAttribute="bottom" constant="27.000000000000057" id="ViP-xY-RC0"/>
-                            <constraint firstItem="aqP-Eg-SoS" firstAttribute="leading" secondItem="gbb-4A-id6" secondAttribute="leading" constant="55" id="g2F-DR-eC7"/>
+                            <constraint firstItem="e85-BD-uK9" firstAttribute="leading" secondItem="gbb-4A-id6" secondAttribute="leading" constant="95" id="1X2-y0-ROB"/>
+                            <constraint firstItem="wVd-lL-GQZ" firstAttribute="top" secondItem="gbb-4A-id6" secondAttribute="top" constant="42" id="7va-Cy-DBw"/>
+                            <constraint firstItem="e85-BD-uK9" firstAttribute="top" secondItem="wVd-lL-GQZ" secondAttribute="bottom" constant="45.5" id="Vcf-jL-yNM"/>
                             <constraint firstItem="wVd-lL-GQZ" firstAttribute="leading" secondItem="gbb-4A-id6" secondAttribute="leading" constant="35" id="j5F-CS-hFR"/>
+                            <constraint firstItem="SEC-2r-J6l" firstAttribute="top" secondItem="e85-BD-uK9" secondAttribute="bottom" constant="65" id="od6-Jb-Z0C"/>
+                            <constraint firstItem="SEC-2r-J6l" firstAttribute="centerX" secondItem="ZBs-lQ-gRl" secondAttribute="centerX" id="ofG-HD-Y1B"/>
+                            <constraint firstItem="SEC-2r-J6l" firstAttribute="centerY" secondItem="ZBs-lQ-gRl" secondAttribute="centerY" id="qMK-hR-hKl"/>
+                            <constraint firstItem="gbb-4A-id6" firstAttribute="trailing" secondItem="e85-BD-uK9" secondAttribute="trailing" constant="94" id="u8s-vF-Zsr"/>
                             <constraint firstItem="gbb-4A-id6" firstAttribute="trailing" secondItem="wVd-lL-GQZ" secondAttribute="trailing" constant="35" id="yDW-ae-EAz"/>
+                            <constraint firstItem="gbb-4A-id6" firstAttribute="trailing" secondItem="SEC-2r-J6l" secondAttribute="trailing" constant="20" id="zIr-Wy-rss"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="EHj-Yx-c82"/>
+                    <connections>
+                        <outlet property="difficultyPicker" destination="e85-BD-uK9" id="6H0-ib-nhj"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ek1-vs-Hi5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -367,7 +375,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="gamecontroller" catalog="system" width="128" height="79"/>
         <image name="party.popper" catalog="system" width="128" height="116"/>
         <image name="square.fill.on.square.fill" catalog="system" width="128" height="116"/>
         <systemColor name="systemBackgroundColor">
